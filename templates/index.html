@@ -1,17 +1,129 @@
 <!doctype html>
+<html>
+
+<head>
 <title>FC SAMPLER</title>
-{% for voice_channel in voice_channels %}
-  <li><a href="/join/{{ voice_channel }}">{{ voice_channel }}</a></li>
-{% endfor %}
-<ul>
-{% for sample in samples %}
-  <li><a href="/play/{{ sample.index }}">{{ sample.name }}</a></li>
-{% endfor %} 
-</ul>
-<style>
-    ul {
-        columns: 2;
-        -webkit-columns: 2;
-        -moz-columns: 2;
+<script>
+  function play(clicked) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/play/' + clicked.value);
+    xhr.send();
+  }
+
+  function search_sample() {
+    let input = document.getElementById('searchbar').value;
+    input=input.toLowerCase();
+    let x = document.getElementsByClassName('sample_shortname_label');
+
+    for (i = 0; i < x.length; i++) {
+      var sample_short_name = x[i].firstChild.innerHTML.toLowerCase();
+      if (!sample_short_name.includes(input)) {
+        x[i].parentElement.style.display="none";
+      }
+      else {
+        x[i].parentElement.style.display="block";
+      }
     }
+  }
+</script>
+</head>
+
+<body>
+  <header>
+    <input type="text" placeholder="Search.." onkeyup="search_sample()" id="searchbar">
+  </header>
+  <div id="samples">
+    {% for sample in samples %}
+      <button class="example_c" value="{{ sample.index }}" onclick="play(this)">
+        <div class="sample_index_label"><p>{{ sample.index }}</p></div>
+        <div class="sample_shortname_label"><p>{{ sample.shortname }}</p></div>
+      </button>
+    {% endfor %}
+  </td>
+</html>
+
+<style>
+
+  body{
+    margin: 0px;
+  }
+
+  header{
+    background-color: #20bf6b;
+    height: 40px;
+  }
+
+  header input#searchbar{
+    /* margin: auto 5px; */
+    vertical-align: middle;
+    /* display: block; */
+  }
+
+  #samples{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 10px;
+    padding: 0px 10px;
+  }
+
+  #samples button{
+    /* display: block; */
+    /* margin:auto; */
+    /* width: 90%; */
+    font-size: large;
+    margin-bottom: 5px;
+
+    color: #494949 !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #ffffff;
+    padding: 0px;
+    border: 2px solid #494949 !important;
+    transition: all 0.2s ease 0s;
+  }
+
+  #samples button:hover {
+    color: #ffffff !important;
+    background: #20bf6b;
+    border-color: #20bf6b !important;
+    transition: all 0.2s ease 0s;
+  }
+
+  #samples button div{
+    display: inline-block;
+    margin: 2px;
+    padding: 3px;
+  }
+
+  #samples button div p{
+    margin: 0px;
+  }
+
+  #samples button div.sample_index_label{
+    width: 10%;
+    text-align: left;
+    border-right: 1px solid #494949 !important;
+    float: left;
+  }
+
+  #samples button:hover div.sample_index_label{
+    border-color: white !important;
+    transition: all 0.2s ease 0s;
+  }
+
+  #samples button div.sample_shortname_label{
+    width: 84%;
+  }
+
+  @media only screen and (max-width: 980px){
+    #samples{
+      grid-template-columns: auto;
+    }
+
+    #samples button{
+      font-size: xx-large;
+    }
+  }
+
 </style>
+</html>
