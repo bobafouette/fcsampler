@@ -1,0 +1,17 @@
+<!doctype html>
+<title>FC SAMPLER</title>
+{% for voice_channel in voice_channels %}
+  <li><a href="/join/{{ voice_channel }}">{{ voice_channel }}</a></li>
+{% endfor %}
+<ul>
+{% for sample in samples %}
+  <li><a href="/play/{{ sample.index }}">{{ sample.name }}</a></li>
+{% endfor %} 
+</ul>
+<style>
+    ul {
+        columns: 2;
+        -webkit-columns: 2;
+        -moz-columns: 2;
+    }
+</style>
