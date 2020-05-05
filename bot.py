@@ -19,11 +19,14 @@ class Sample(object):
     def __init__(self, name, path):
         self.name = name
         self.path = path
-        index_regex = re.compile(r"(?P<index>[0-9]+)\s.+")
+        index_regex = re.compile(r"(?P<index>[0-9]+)\s(?P<shortname>.+)")
         index_match = re.match(index_regex, self.name)
         if not index_match:
             raise ValueError('Not a valid sound name: {}. Could not extract index'.format(self.name))
         self.index = int(index_match.group('index'))
+        self.shortname = index_match.group('shortname')
+        if len(self.shortname) > 30:
+            self.shortname = self.shortname[:30] + '...'
 
     def __eq__(self, sample):
         return self.index == sample.index
