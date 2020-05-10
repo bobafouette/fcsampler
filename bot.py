@@ -7,6 +7,7 @@ import time
 from discord.ext import commands
 from flask import Flask
 from flask import render_template
+from flask import Response
 from functools import partial
 from threading import Thread
 
@@ -79,8 +80,6 @@ class FcSampler(commands.Bot):
     def play(self, sample):
         print(sample.name)
         for voice_client in self.voice_clients:
-            if voice_client.is_playing():
-                continue
             voice_client.play(discord.FFmpegPCMAudio(sample.path))
 
 fcSampler = FcSampler()
@@ -152,8 +151,11 @@ def hello_world():
 def play_web(index=1):
     print('play')
     sample = jukebox[int(index)]
-    fcSampler.play(sample)
-    return render_template('index.html', samples=jukebox.playlist)
+    try:
+        fcSampler.play(sample)
+    except discord.ClientException:
+        return Response('Already playing audio', status=409)
+    return Response('Playing Sound {}'.format(sample.shortname), status=202)
 
 partial_run = partial(app.run, host="0.0.0.0", port=5000, debug=True, use_reloader=False)
 t = Thread(target=partial_run)

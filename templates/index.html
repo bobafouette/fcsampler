@@ -7,6 +7,17 @@
   function play(clicked) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/play/' + clicked.value);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 409) {
+          clicked.classList.add("error");
+          setTimeout(function() { clicked.classList.remove("error"); }, 500);
+        } else {
+          clicked.classList.add("success");
+          setTimeout(function() { clicked.classList.remove("success"); }, 500);
+        }
+      }
+    }
     xhr.send();
   }
 
@@ -30,7 +41,9 @@
 
 <body>
   <header>
-    <input type="text" placeholder="Search.." onkeyup="search_sample()" id="searchbar">
+    <div id="header_container">
+      <input type="text" placeholder="Search..." onkeyup="search_sample()" id="searchbar"/>
+    </div>
   </header>
   <div id="samples">
     {% for sample in samples %}
@@ -49,14 +62,37 @@
   }
 
   header{
-    background-color: #20bf6b;
+    background-color: hsl(148, 71%, 44%);
     height: 40px;
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+  }
+
+  header div#header_container{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    padding-right: 10px;
   }
 
   header input#searchbar{
-    /* margin: auto 5px; */
+    border-radius: 4px;
+    border: 2px solid rgba(23, 134, 75, 0.8);
     vertical-align: middle;
-    /* display: block; */
+    font-size: larger;
+    text-transform: uppercase;
+    width: 5%;
+    transition: all 0.2s ease 0s;
+  }
+
+  header input#searchbar:focus{
+    outline: none;
+    width: 13%;
+    border: 2px solid rgba(23, 134, 75, 1);
+    transition: all 0.2s ease 0s;
   }
 
   #samples{
@@ -83,6 +119,18 @@
   }
 
   #samples button:hover {
+    border-color: #20bf6b !important;
+    transition: all 0.2s ease 0s;
+  }
+
+  #samples button.error {
+    color: #ffffff !important;
+    background: red;
+    border-color: red !important;
+    transition: all 0.2s ease 0s;
+  }
+
+  #samples button.success {
     color: #ffffff !important;
     background: #20bf6b;
     border-color: #20bf6b !important;
@@ -107,7 +155,17 @@
   }
 
   #samples button:hover div.sample_index_label{
-    border-color: white !important;
+    border-color: #20bf6b !important;
+    transition: all 0.2s ease 0s;
+  }
+
+  #samples button.error div.sample_index_label{
+    border-color: red !important;
+    transition: all 0.2s ease 0s;
+  }
+
+  #samples button.success div.sample_index_label{
+    border-color: #20bf6b !important;
     transition: all 0.2s ease 0s;
   }
 
@@ -116,6 +174,24 @@
   }
 
   @media only screen and (max-width: 980px){
+
+    header{
+      height: 130px;
+    }
+
+    header div#header_container{
+      justify-content: center;
+    }
+
+    header input#searchbar{
+      width: 90%;
+      font-size: xx-large;
+    }
+
+    header input#searchbar:focus{
+      width: 90%;
+    }
+
     #samples{
       grid-template-columns: auto;
     }
