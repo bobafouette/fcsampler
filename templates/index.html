@@ -3,6 +3,13 @@
 
 <head>
 <title>FC SAMPLER</title>
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script> -->
+<meta name="viewport" content="user-scalable=0"/>
+<link rel="stylesheet" href="/static/style.css">
 <script>
   function play(clicked) {
     var xhr = new XMLHttpRequest();
@@ -41,9 +48,16 @@
 
 <body>
   <header>
-    <div id="header_container">
+    <div id="search_container">
       <input type="text" placeholder="Search..." onkeyup="search_sample()" id="searchbar"/>
     </div>
+    <div id="upload_container">
+      <form method=post enctype=multipart/form-data id="upload-form">
+        <input type=file name=file id="upload_input" onchange="document.getElementById('upload_submit').click()">
+        <input type=submit value=Upload id="upload_submit">
+      </form>
+      <img src="/static/arrows.png" id="upload_img" onclick="document.getElementById('upload_input').click()"/>
+  </div>
   </header>
   <div id="samples">
     {% for sample in samples %}
@@ -52,154 +66,10 @@
         <div class="sample_shortname_label"><p>{{ sample.shortname }}</p></div>
       </button>
     {% endfor %}
-  </td>
+    </div>
 </html>
 
 <style>
-
-  body{
-    margin: 0px;
-  }
-
-  header{
-    background-color: hsl(148, 71%, 44%);
-    height: 40px;
-    width: 100%;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-  }
-
-  header div#header_container{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    height: 100%;
-    padding-right: 10px;
-  }
-
-  header input#searchbar{
-    border-radius: 4px;
-    border: 2px solid rgba(23, 134, 75, 0.8);
-    vertical-align: middle;
-    font-size: larger;
-    text-transform: uppercase;
-    width: 5%;
-    transition: all 0.2s ease 0s;
-  }
-
-  header input#searchbar:focus{
-    outline: none;
-    width: 13%;
-    border: 2px solid rgba(23, 134, 75, 1);
-    transition: all 0.2s ease 0s;
-  }
-
-  #samples{
-    display: grid;
-    grid-template-columns: auto auto auto;
-    grid-column-gap: 10px;
-    padding: 0px 10px;
-  }
-
-  #samples button{
-    /* display: block; */
-    /* margin:auto; */
-    /* width: 90%; */
-    font-size: large;
-    margin-bottom: 5px;
-
-    color: #494949 !important;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: #ffffff;
-    padding: 0px;
-    border: 2px solid #494949 !important;
-    transition: all 0.2s ease 0s;
-  }
-
-  #samples button:hover {
-    border-color: #20bf6b !important;
-    transition: all 0.2s ease 0s;
-  }
-
-  #samples button.error {
-    color: #ffffff !important;
-    background: red;
-    border-color: red !important;
-    transition: all 0.2s ease 0s;
-  }
-
-  #samples button.success {
-    color: #ffffff !important;
-    background: #20bf6b;
-    border-color: #20bf6b !important;
-    transition: all 0.2s ease 0s;
-  }
-
-  #samples button div{
-    display: inline-block;
-    margin: 2px;
-    padding: 3px;
-  }
-
-  #samples button div p{
-    margin: 0px;
-  }
-
-  #samples button div.sample_index_label{
-    width: 10%;
-    text-align: left;
-    border-right: 1px solid #494949 !important;
-    float: left;
-  }
-
-  #samples button:hover div.sample_index_label{
-    border-color: #20bf6b !important;
-    transition: all 0.2s ease 0s;
-  }
-
-  #samples button.error div.sample_index_label{
-    border-color: red !important;
-    transition: all 0.2s ease 0s;
-  }
-
-  #samples button.success div.sample_index_label{
-    border-color: #20bf6b !important;
-    transition: all 0.2s ease 0s;
-  }
-
-  #samples button div.sample_shortname_label{
-    width: 84%;
-  }
-
-  @media only screen and (max-width: 980px){
-
-    header{
-      height: 130px;
-    }
-
-    header div#header_container{
-      justify-content: center;
-    }
-
-    header input#searchbar{
-      width: 90%;
-      font-size: xx-large;
-    }
-
-    header input#searchbar:focus{
-      width: 90%;
-    }
-
-    #samples{
-      grid-template-columns: auto;
-    }
-
-    #samples button{
-      font-size: xx-large;
-    }
-  }
 
 </style>
 </html>
